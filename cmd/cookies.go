@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	"github.com/kr/pretty"
+	"github.com/olekukonko/tablewriter"
+	"os"
 )
 
 var (
@@ -12,7 +13,14 @@ type CookiePlugin struct {
 }
 
 func (p CookiePlugin) Do(env *Environment) error {
-	pretty.Print(env.Client.Jar)
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"Path", "Name", "Value"})
+
+	for _, cookie := range env.Client.Jar.Cookies(env.URL) {
+		table.Append([]string{cookie.Path, cookie.Name, cookie.Value})
+	}
+
+	table.Render()
 
 	return nil
 }

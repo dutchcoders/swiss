@@ -32,11 +32,7 @@ func (p FormPlugin) Do(env *Environment) error {
 
 	// no form found
 
-	if v := doc.Find("form"); v == nil {
-		fmt.Println("No form found.")
-		return nil
-	} else {
-
+	doc.Find("form").Each(func(i int, v *goquery.Selection) {
 		fmt.Println("[+] Form")
 		fmt.Println("========")
 
@@ -91,7 +87,7 @@ func (p FormPlugin) Do(env *Environment) error {
 		// action
 
 		// find all input s
-	}
+	})
 
 	return nil
 }

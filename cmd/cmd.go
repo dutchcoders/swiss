@@ -1,14 +1,9 @@
 package cmd
 
 import (
+	"crypto/tls"
 	"fmt"
 
-	"github.com/chzyer/readline"
-	"github.com/fatih/color"
-	_ "github.com/fatih/color"
-	"github.com/minio/cli"
-	"github.com/op/go-logging"
-	"golang.org/x/net/proxy"
 	"io"
 	"net"
 	"net/http"
@@ -18,6 +13,13 @@ import (
 	"os/user"
 	"path"
 	"strings"
+
+	"github.com/chzyer/readline"
+	"github.com/fatih/color"
+	_ "github.com/fatih/color"
+	"github.com/minio/cli"
+	"github.com/op/go-logging"
+	"golang.org/x/net/proxy"
 )
 
 // censys
@@ -198,6 +200,9 @@ func New() *Cmd {
 				&http.Client{
 					Transport: &http.Transport{
 						Dial: d,
+						TLSClientConfig: &tls.Config{
+							InsecureSkipVerify: true,
+						},
 					},
 					Jar: jar,
 				},
